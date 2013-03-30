@@ -1,0 +1,72 @@
+h1{
+	text-align:center;
+}
+#radio {
+
+}
+
+#selector {
+    width:250px;
+    text-align:center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+footer{
+	position:absolute;
+   bottom:2;
+   width:98%;
+}
+
+footer div{
+	float:right;
+	padding:5px;
+	font-size:9px;
+}
+
+table{
+   margin-left: auto;
+   margin-right: auto;
+	width:800px;
+	border-collapse:separate;
+	border:5px;
+	border-color:gray;
+	border-style:groove;
+}
+table.Services{
+		width:800px;
+}
+table.Tables{
+	width:800px;
+}
+table.Functions{
+	width:800px;
+}
+
+table.Services tr, table.Services th{
+}
+table.Functions tr, table.Functions th{
+}
+table.Tables tr, table.Tables th{
+}
+
+table.Services tr.odd{
+	 background-color:lightgray;
+}	
+table.Services tr.header{
+	 background-color:gray;
+}
+table.Tables tr.odd{
+	 background-color:lightgray;
+}	
+table.Tables tr.header{
+	 background-color:gray;
+}	
+table.Functions tr.odd{
+	 background-color:lightgray;
+}	
+table.Functions tr.header{
+	 background-color:gray;
+}
+

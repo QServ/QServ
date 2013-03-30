@@ -1,0 +1,30 @@
+<html>
+  <head>
+	 <link rel="stylesheet" type="text/css" href="discovery.css"/>
+ 	 <script type="text/javascript" src="q.js"></script> 
+  </head>
+
+  <body>
+	 <h1>Discovery web page.</h1>
+	 <div id="selector">    
+	 <form action="" onsubmit="GetDiscoveryData(); return false;">
+	     <input type="text" id="filter" name="filter" autocomplete="off" style="width:100px" />
+	     <input type="submit" value="Submit"/> 
+	     <div id="radio">
+	       <input type="radio" name="tableSelector" value=".h.getFunctionsTable">Functions
+	       <input type="radio" name="tableSelector" value=".h.getTablesTable" checked>Tables
+	       <input type="radio" name="tableSelector" value=".h.getServiceTable"> Services
+	     </div> 
+	     
+	 </form>
+	 </div> 
+	
+    <div id="table"></div>
+  <footer> 
+	 <div id="email">johan.o.hemstrom@gmail.com</div>
+ 	 <div id="me">Created by Johan Hemstrom</div>
+  </footer>
+</body>
+
+</html>
+
