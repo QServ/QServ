@@ -19,4 +19,5 @@ tableHandler/ Not implemented yet. Will handle subscription to tables between se
 
 historyServer/ Not implemented yet. Will be a generic server that saves published table(s) to disk in a hdb.
 
-
+scheduler/ This is a scheduler that can be used to schedule jobs to run at sertain times. 
+           Will be implemeted as separate service also.
