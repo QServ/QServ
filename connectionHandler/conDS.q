@@ -18,21 +18,21 @@
 // handle is always correct. 
 //
 // NOTE: This function overrides the one defined in con.q to include the 
-//       discovery specific functionality.
+//			discovery specific functionality.
 //
 // Parameters:
-// 	ref	(symbol) The reference that identifies this connection.
+//		ref	(symbol) The reference that identifies this connection.
 //
 //*******************************************************************************
 getCon:{[ref]
 	$[ref in key .con.hostConnections;
 		 .con.hostConnections[ref;`Handle];
 	  ref in key .con.serviceConnections;
- 		 .con.serviceConnections[ref;`Handle];
+		 .con.serviceConnections[ref;`Handle];
 	  ref in key .con.pendingHostConnections;
 		 reconnectHost[ref];
 	  ref in key .con.pendingServiceConnections;
- 		 0i; //try to reconnect...
+		 0i; //try to reconnect...
 	  '`$"No such reference: ", string ref]}
 
 //*******************************************************************************
@@ -43,7 +43,7 @@ getCon:{[ref]
 // Parameters:
 //		service			(symbol)	 The name of the servcie that we should connect 
 //										 to.
-// 	reference		(symbol)  A unique reference to a host connection.
+//		reference		(symbol)	 A unique reference to a host connection.
 //		reconnect		(boolean) Flag that tells the connection handler if is 
 //										 should try to reopen the handle on close.
 //		disconHandler	(symbol)	 The full name of the function that should be 
@@ -61,7 +61,7 @@ setupServiceCon:{[service;reference;reconnect;disconHandler]
 closeServiceCon:{[ref] 
 	h:getCon[ref];
 	hcloes[h];
-	//delete from  
+	//delete from	
 	'nyi;
 	}
 
@@ -91,7 +91,7 @@ handleServiceConnectionClose:{[handle]
 		h:openCon `$":",(string first con[`Host]),":",string first con[`Port];
 	//Setup pending connections if we can't get a new connection right away.
 		delete from `.con.serviceConnections where Handle = handle, Reconnect=0b;
- 	  if[h=0i;
+	  if[h=0i;
 			[`.con.peindingServiceConnections upsert 
 			 select Reference, ServiceName, Instance, DisconnectionHandler, Reconnect 
 			 from .con.serviceConnections where Handle = handle;

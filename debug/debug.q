@@ -108,7 +108,7 @@ wrapTraceFunction:{[ns;fn]
    newFn:value "{[",(";" sv string params),"].debug.trace[\"--> ",((string ns),".",fname),"\"];res:.[",newFnName,"; ",e,"(",(";" sv string params),");{.debug.errorTrace[\"",(string ns),"\";\"",fname,"\";","x]; '`$x}];.debug.trace[\"<-- ",((string ns),".",fname),"\"];res}";
    //Overwrite the old function with the new.
    ![ns;();0b;(enlist fn)!enlist newFn];
-	}
+   }
 
 // This function replaces an existing function and 
 // calls the original function with protected evaluation.

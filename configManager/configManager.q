@@ -25,7 +25,7 @@
 //       is uesd to laod the configuration. All other files will be ignored.
 //
 // NOTE2: Remember that the loading order is important. If the same config name 
-// 		 occurs in more than one config file only the last one to be loaded will
+//        occurs in more than one config file only the last one to be loaded will
 //        be available.
 //
 //*******************************************************************************
@@ -40,22 +40,22 @@ commonConfigPath:getenv `KDB_COMMON_CONFIG_PATH;
 // Loads a config file into the service config
 //*******************************************************************************
 loadFile:{[filename]
-	prefix:`svc;
-	// create the prefix if needed
-	if[not prefix in key .cfg; .cfg[prefix]:(()!())];
-	loadFileIntoPrefix[svcConfigPath;prefix;filename];
-	}
+   prefix:`svc;
+   // create the prefix if needed
+   if[not prefix in key .cfg; .cfg[prefix]:(()!())];
+   loadFileIntoPrefix[svcConfigPath;prefix;filename];
+   }
 
 //*******************************************************************************
 //*******************************************************************************
 loadCommonCfg:{[]
-	loadAllFiles[commonConfigPath;`common];
-	}
+   loadAllFiles[commonConfigPath;`common];
+   }
 //*******************************************************************************
 //*******************************************************************************
 loadAllSvcConfig:{[]
-	loadAllFiles[svcConfigPath;`svc];
-	}
+   loadAllFiles[svcConfigPath;`svc];
+   }
 
 //*******************************************************************************
 // getConfigFileNames[]
@@ -63,31 +63,31 @@ loadAllSvcConfig:{[]
 // Returns the name of all files in the directory defined by path 
 //
 // Parameters:
-//		path	(string) The path to the directory containing the config files that 
-//							should be listed.
+//    path  (string) The path to the directory containing the config files that 
+//                   should be listed.
 //
 //*******************************************************************************
 getConfigFileNames:{[path]
-	f @ where (f: system "ls ",path) like "*.cfg"}
+   f @ where (f: system "ls ",path) like "*.cfg"}
 
 //*******************************************************************************
 //*******************************************************************************
 loadAllFiles:{[path;prefix]
-	// create the prefix if needed
-	if[not prefix in key .cfg; .cfg[prefix]:(()!())];
-	
-	f:getConfigFileNames[path];
-	loadFileIntoPrefix[path;prefix] each f;
-	}
+   // create the prefix if needed
+   if[not prefix in key .cfg; .cfg[prefix]:(()!())];
+   
+   f:getConfigFileNames[path];
+   loadFileIntoPrefix[path;prefix] each f;
+   }
 
 //*******************************************************************************
 //*******************************************************************************
 loadFileIntoPrefix:{[path;prefix;filename]
-	{[prefix;x] 
-		if[not (x[0] like "#*") or (x[0] like "");
-		.cfg[prefix;x[0]]:x[1]]
-	}[prefix]each flip ("SS";"=")0: `$":", path ,"/",filename;
-	}
+   {[prefix;x] 
+      if[not (x[0] like "#*") or (x[0] like "");
+      .cfg[prefix;x[0]]:x[1]]
+   }[prefix]each flip ("SS";"=")0: `$":", path ,"/",filename;
+   }
 
 
 //*********************** load common config ************************************

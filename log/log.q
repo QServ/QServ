@@ -29,40 +29,40 @@
 // A logfile have to be setup using this function
 // before it is used.
 setupLogFile:{[ref;fileName]
-	if[ref in exec Reference from .log.logOutputs;   
-			line: first select from .log.logOutputs where Reference = ref;
-			warn[("reference ";ref ;" is already setup as "string line[`Type]; " logger")];
-			:0b];	
-	if[fileName in exec Name from .log.logOutputs;
-			line first select from .log.logOutputs where Name=fileName;   
-			warn[("The name ";(string fileName); " have already been setup. The reference used is ";
-			line[`Reference]); " The type is "; line[`Type]];
-			:0b];	
-	`.log.logOutputs upsert (fileName;ref;hopen hsym fileName;0n;`file);
-	1b}
+   if[ref in exec Reference from .log.logOutputs;   
+         line: first select from .log.logOutputs where Reference = ref;
+         warn[("reference ";ref ;" is already setup as "string line[`Type]; " logger")];
+         :0b]; 
+   if[fileName in exec Name from .log.logOutputs;
+         line first select from .log.logOutputs where Name=fileName;   
+         warn[("The name ";(string fileName); " have already been setup. The reference used is ";
+         line[`Reference]); " The type is "; line[`Type]];
+         :0b]; 
+   `.log.logOutputs upsert (fileName;ref;hopen hsym fileName;0n;`file);
+   1b}
 
 //TODO: name and filename...fix.
 setupLogServer:{[ref;host;port]
-	if[ref in exec Reference from .log.logOutputs;   
-			line: first select from .log.logOutputs where Reference = ref;
-			warn[("reference ";ref ;" is already setup as "string line[`Type]; " logger")];
-			:0b];	
-	if[host in exec Name from .log.logOutputs;
-			line first select from .log.logOutputs where Name=host;   
-			warn[("The name ";(string host); " have already been setup. The reference used is ";
-			line[`Reference]); " The type is "; line[`Type]];
-			:0b];	
-	handle:hopen `$":",(string host),":", string port;
-	if[handle = 0i;
-		warn["Could not open connection to ";host; ":";port]];
-	(neg handle) (".logServer.register";`test;`test.log);
-	`.log.logOutputs upsert (host;ref;handle;port;`server);
-	1b}
+   if[ref in exec Reference from .log.logOutputs;   
+         line: first select from .log.logOutputs where Reference = ref;
+         warn[("reference ";ref ;" is already setup as "string line[`Type]; " logger")];
+         :0b]; 
+   if[host in exec Name from .log.logOutputs;
+         line first select from .log.logOutputs where Name=host;   
+         warn[("The name ";(string host); " have already been setup. The reference used is ";
+         line[`Reference]); " The type is "; line[`Type]];
+         :0b]; 
+   handle:hopen `$":",(string host),":", string port;
+   if[handle = 0i;
+      warn["Could not open connection to ";host; ":";port]];
+   (neg handle) (".logServer.register";`test;`test.log);
+   `.log.logOutputs upsert (host;ref;handle;port;`server);
+   1b}
 
 // flog (file log) logs to the given file.
 flog:{[file;lvl;data]
    if[not lvl>logLvl;
-		if[not 0 ~ type data; data: enlist data];
+      if[not 0 ~ type data; data: enlist data];
       `.log.logBuffer upsert (.z.P;data;levels lvl;file)];
    }
 
@@ -89,8 +89,8 @@ ffatal:{[fileRef;data] flog[fileRef;FATAL;data]}
 // during file I/O.
 logBuffer:([]Time:`timestamp$();
              Data:();
-				 Level:`$();
-				 File:`$());
+             Level:`$();
+             File:`$());
 
 // All trace messages are stored in the trace bkuffer 
 // to be flushed to file at a later point.
@@ -100,10 +100,10 @@ traceBuffer:([]Time:`timestamp$();
 
 // logOutputs keeps track of 
 logOutputs:([]Name:`$();
-				Reference:`$();
-				Handle:`int$();
-				Port:`int$();
-				Type:`$());
+            Reference:`$();
+            Handle:`int$();
+            Port:`int$();
+            Type:`$());
 
 //std out. Override to write to file.
 STDOUT:-1;
@@ -139,51 +139,51 @@ trace:{[fun]
    }
     
 format:{[data]
-	$[0>type data;
-		string data;
-	  10h ~ type data;
-		data;
-		[" " sv {$[0>type x;
-       			    string x;
-					  10h ~ type x;
-					    x;
-         		    format x]} each data]]}
+   $[0>type data;
+      string data;
+     10h ~ type data;
+      data;
+      [" " sv {$[0>type x;
+                   string x;
+                 10h ~ type x;
+                   x;
+                   format x]} each data]]}
 
 flushLog:{
-	//Start with the stuff that should be sent to a logging serer.
-	serverOut:select from .log.logBuffer 
-			where File in (exec Reference from .log.logOutputs where Type = `server);
-	sendToServer[serverOut]
-	delete from `.log.logBuffer 
-			 where File in (exec Reference from .log.logOutputs where Type = `server);
-	
-	//Then flush the rest to file.
+   //Start with the stuff that should be sent to a logging serer.
+   serverOut:select from .log.logBuffer 
+         where File in (exec Reference from .log.logOutputs where Type = `server);
+   sendToServer[serverOut]
+   delete from `.log.logBuffer 
+          where File in (exec Reference from .log.logOutputs where Type = `server);
+   
+   //Then flush the rest to file.
    fileOut: select Date:Time.date, Time:Time.time, Data, File, Level 
         from .log.logBuffer; 
    writeToFile each fileOut;
-	delete from `.log.logBuffer;
-	}
+   delete from `.log.logBuffer;
+   }
 
 sendToServer:{[Log]
-	servers:exec distinct File from Log;
-	{[logTable;server]
-		handle:first exec Handle from .log.logOutputs where Reference = server;
-		data: select from logTable where File=server;
-	 	(neg handle) (`.logServer.logg;`test;data);
-	}[Log]each servers;
-	}
+   servers:exec distinct File from Log;
+   {[logTable;server]
+      handle:first exec Handle from .log.logOutputs where Reference = server;
+      data: select from logTable where File=server;
+      (neg handle) (`.logServer.logg;`test;data);
+   }[Log]each servers;
+   }
 
 // internal funcition. Should not be used by other systems.
 writeToFile:{[Log]
-	file: Log[`File];
-	fileHandle:$[null file;
-			 		 LOGOUT;
-					 first exec Handle from logOutputs where Reference=file];
-	Time: (" " sv string (Log[`Date`Time`]));
-	$[null fileHandle;
-		[LOGOUT  Time, "WARNING: logfile ", (string file), " Has not been setup correct. Logging to default logger\n";
-		 LOGOUT  Time, (string Log[`Level]), ": ", format[Log[`Data]], "\n"];
-		fileHandle  Time,(string Log[`Level]), ": ", format[Log[`Data]], "\n"];
-	}
+   file: Log[`File];
+   fileHandle:$[null file;
+                LOGOUT;
+                first exec Handle from logOutputs where Reference=file];
+   Time: (" " sv string (Log[`Date`Time`]));
+   $[null fileHandle;
+      [LOGOUT  Time, "WARNING: logfile ", (string file), " Has not been setup correct. Logging to default logger\n";
+       LOGOUT  Time, (string Log[`Level]), ": ", format[Log[`Data]], "\n"];
+      fileHandle  Time,(string Log[`Level]), ": ", format[Log[`Data]], "\n"];
+   }
 
 \d .
