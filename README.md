@@ -7,7 +7,7 @@ The directories are
 
 config/ This directory contains example configuration. It is read by the configManager.
 
-configManager/ Rades configurations files and saves them in .cfg
+configManager/ Reads configurations files and saves them in .cfg
 
 ConnectionHandeler/ Handeles connections, reconnect and disconnection handlers.
 
