@@ -8,6 +8,8 @@
 // web intecface. 
 //Move to config later
 \l ../configManager/configManager.q
+.cfg.loadFile["ds.cfg"];
+
 
 system "p ", string .cfg.common[`discoveryPort];
 
@@ -36,6 +38,7 @@ Functions:([Function:`symbol$();
    LastHeartBeat:`timestamp$());
 
 \d .ds
+staleEntryTime:"I"$string .cfg.svc[`staleEntryTime];
 
 //***********************************************************
 // registerService[]
@@ -56,7 +59,7 @@ registerService:{[svc]
 //    x  If x is a symbol all services that matches that name 
 //       is returned.
 //       if x is a list the fisrt entry is matched against 
-//       the service name and the second is matched agains
+//       the service name and the second is matched against
 //       the instanece.
 //***********************************************************
 getService:{
@@ -76,20 +79,20 @@ getService:{
 registerTable:{[t]
    `Tables upsert update LastHeartBeat:.z.P from t;
    1b}                    
+
 //***********************************************************
-// getTableHost[]
-// Returns all hosts that have registred a table that 
-// corresponds to x.
+// getTableDetails[]
+// Returns the information registred about the given table.
 // 
 // Parameters:
 //    x  If x is a symbol all Table entries that name is 
 //       returned.
-//       if x is a list the fisrt entry is matched against 
+//       if x is a list the first entry is matched against 
 //       the table name and the second is matched agains
 //       the part. If a third entry is suplied that is
 //       used to match the instance.
 //***********************************************************
-getTableHost:{
+getTableDetails:{
    $[3 = count x;
       select  from `.[`Tables] where Table=x[0], Part=x[1], Instrance=x[2];
      2 = count x;
@@ -98,7 +101,6 @@ getTableHost:{
       select  from `.[`Tables] where Table=x;
       'parameterLength]
    }
-
 
 //***********************************************************
 // registerFunctions[]
@@ -110,7 +112,19 @@ registerFunction:{[f]
    `Functions upsert update LastHeartBeat:.z.P from f;
    1b}                    
 
-getFunctionHost:{
+//***********************************************************
+// getFunctionDetails[]
+// Returns the information registred about the given 
+// function.
+// 
+// Parameters:
+//    x  If x is a symbol all Function entries that name is 
+//       returned.
+//       if x is a list the first entry is matched against 
+//       the table name and the second is matched against
+//       the Instance.
+//***********************************************************
+getFunctionDetails:{
    $[2 = count x;
       select  from `.[`Functions] where Function=x[0], Instance=x[1];
      1 = count x;
@@ -150,6 +164,17 @@ functionHeartbeat:{[f]
       update LastHeartBeat:.z.P from `Functions where (flip (Function;Instance)) in flip value f];
    }
 
+//Remove entries that are older than staleEntryTime old (in 1/1000 sec).
+cleanStaleEntries:{
+   staleTime: (ltime x) - 16h$staleEntryTime * 10 xexp 6;
+   delete from `Services where LastHeartBeat < staleTime;
+   delete from `Tables where LastHeartBeat < staleTime;
+   delete from `Functions where LastHeartBeat < staleTime;
+   }
+
+system "t 1000";
+.z.ts:cleanStaleEntries;
+   
 
 //*********** Webs tuff *************************
 \d .h
@@ -235,5 +260,6 @@ getFunctionsTable:{[filter]
       Active
    from `.[`Functions] 
    where Function like filter}
+
 
 \d .

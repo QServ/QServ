@@ -1,4 +1,4 @@
-ws=new WebSocket("ws://192.168.0.197:9999/");
+ws=new WebSocket("ws://192.168.0.201:9999/");
 
 ws.binaryType = "arraybuffer";
 ws.onmessage = function(msg){

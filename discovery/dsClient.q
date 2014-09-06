@@ -11,8 +11,14 @@ dsPort:"I"$ string .cfg.common[`discoveryPort];
 
 //initialise the connection to the discovery service.
 .con.setupHostCon[dsHost;dsPort;`discovery;1b;""];
+
+//*******************************************************************************
+// getDsCon[]
+// Gets the connection to the discovry service.
+//*******************************************************************************
 getDsCon:{.con.getCon[`discovery]}
 
+//The services registred by this service.
 regServices:([Service:`symbol$();
    Instance:`symbol$()]
    Host:`symbol$();
@@ -20,6 +26,7 @@ regServices:([Service:`symbol$();
    Type:`symbol$();
    Active:`int$());
 
+//The tables registred by this service.
 regTables:([Table:`symbol$();
    Part:`int$();
    Instance:`symbol$()]
@@ -27,6 +34,7 @@ regTables:([Table:`symbol$();
    Port:`int$();
    Active:`int$());
 
+//The functions registred by this service.
 regFunctions:([Function:`symbol$();
    Instance:`symbol$()]
    Async:`boolean$();
@@ -68,8 +76,14 @@ registerTable:{[table; part; inst; active]
    con (`.ds.registerTable;t);
    }
 
+//*******************************************************************************
+// getTableDetails[]
+// A wraper to call the function getTableDetails in the discovery service.
+// Parameter:
+//	x	
+//*******************************************************************************
 getTableDetails:{
-   getDsCon[] (`.ds.getTableHost;x)}
+   getDsCon[] (`.ds.getTableDetails;x)}
 
 
 //*******************************************************************************
@@ -87,7 +101,7 @@ registerFunction:{[func;inst;async;active]
    }
 
 getFunctionDetails:{
-   getDsCon[] (`.ds.getFunctionHost;x)}
+   getDsCon[] (`.ds.getFunctionDetails;x)}
 
 execFun:{[fun;instance;keepHandle;params]
    d:first () xkey getFunctionDetails[(fun;instance)];

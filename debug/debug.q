@@ -37,12 +37,6 @@ enableTrap:{.debug.TRAP:1b}
 //Utility funxtions to turn error trapping off.
 disableTrap:{.debug.TRAP:0b}
 
-//Utility function to turn tracing on
-enableTrace:{.debug.TRACE:1b}
-//Utility function to turn tracing off
-disableTrace:{.debug.TRACE:0b}
-
-
 //******************* Tracing **************************
 //Function used to log. Override with the function used 
 //in the rest of the system.

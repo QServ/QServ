@@ -53,10 +53,10 @@ getCon:{[ref]
 //*******************************************************************************
 setupHostCon:{[host;port;reference;reconnect;disconHandler]
    if[reference in .con.references;
-      //(reference in key .con.hostConnections) or 
-      //(reference in key .con.serviceConnections) or
-      //(reference in key .con.pendingHostConnections) or
-      //(reference in key .con.pendingServiceConnections);
+      (reference in key .con.hostConnections) or 
+      (reference in key .con.serviceConnections) or
+      (reference in key .con.pendingHostConnections) or
+      (reference in key .con.pendingServiceConnections);
       '`$"Reference `", (string reference) ," is already in use"];
    h:first exec Handle from .con.handles where Host=host, Port=port;
    if[(not null h) and not h = 0i; 

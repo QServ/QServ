@@ -16,8 +16,8 @@
 //
 // The variable KDB_SVC_CONFIG_PATH is used for the service speciffic config.
 // The files in this directory are not loaded automatically and will have to be 
-// loaded manually using the .cfg.load[] function. To load all config files in 
-// this directory the function .cfg.loadAllSvcConfig[] should be used.  
+// loaded manually using the .cfg.loadFile[] function. To load all config files 
+// in this directory the function .cfg.loadAllSvcConfig[] should be used.  
 // The configuration items in these files will be available in the variable
 // .cfg.svc.<name>
 //
