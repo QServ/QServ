@@ -80,7 +80,7 @@ registerTable:{[table; part; inst; active]
 // getTableDetails[]
 // A wraper to call the function getTableDetails in the discovery service.
 // Parameter:
-//	x	
+//  x   
 //*******************************************************************************
 getTableDetails:{
    getDsCon[] (`.ds.getTableDetails;x)}

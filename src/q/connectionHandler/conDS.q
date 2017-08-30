@@ -1,4 +1,4 @@
-//*******************************************************************************
+§//*******************************************************************************
 // This file contains functions that are dependent on the discovery service and
 // client to function.
 //
@@ -10,7 +10,7 @@
 // getCon[]
 //
 // This function is used to get the handle to another Q service. The Connection 
-// must have been setu using the function setupHostCon[] or setupServiceCon[] 
+// must have been setup using the function setupHostCon[] or setupServiceCon[] 
 // before this function is called. If the connection have been lost it will try 
 // to reconnect and return the new handle. To avoid stale or wrong handles the 
 // handle itself should never be saved by a service, it should make use of the 
@@ -18,22 +18,22 @@
 // handle is always correct. 
 //
 // NOTE: This function overrides the one defined in con.q to include the 
-//			discovery specific functionality.
+//          discovery specific functionality.
 //
 // Parameters:
-//		ref	(symbol) The reference that identifies this connection.
+//     ref   (symbol) The reference that identifies this connection.
 //
 //*******************************************************************************
 getCon:{[ref]
-	$[ref in key .con.hostConnections;
-		 .con.hostConnections[ref;`Handle];
-	  ref in key .con.serviceConnections;
-		 .con.serviceConnections[ref;`Handle];
-	  ref in key .con.pendingHostConnections;
-		 reconnectHost[ref];
-	  ref in key .con.pendingServiceConnections;
-		 0i; //try to reconnect...
-	  '`$"No such reference: ", string ref]}
+    $[ref in key .con.hostConnections;
+         .con.hostConnections[ref;`Handle];
+      ref in key .con.serviceConnections;
+         .con.serviceConnections[ref;`Handle];
+      ref in key .con.pendingHostConnections;
+         reconnectHost[ref];
+      ref in key .con.pendingServiceConnections;
+         0i; //try to reconnect...
+      '`$"No such reference: ", string ref]}
 
 //*******************************************************************************
 // setupServiceCon[]
@@ -41,17 +41,17 @@ getCon:{[ref]
 // desired service.
 //
 // Parameters:
-//		service			(symbol)	 The name of the servcie that we should connect 
-//										 to.
-//		reference		(symbol)	 A unique reference to a host connection.
-//		reconnect		(boolean) Flag that tells the connection handler if is 
-//										 should try to reopen the handle on close.
-//		disconHandler	(symbol)	 The full name of the function that should be 
-//										 called when the handle is closed.
+//     service       (symbol)  The name of the servcie that we should connect 
+//                             to.
+//     reference     (symbol)  A unique reference to a host connection.
+//     reconnect     (boolean) Flag that tells the connection handler if is 
+//                             should try to reopen the handle on close.
+//     disconHandler (symbol)  The full name of the function that should be 
+//                             called when the handle is closed.
 //*******************************************************************************
 setupServiceCon:{[service;reference;reconnect;disconHandler]
-	'niy;
-	}
+    'niy;
+    }
 
 //*******************************************************************************
 // closeServiceCon[]
@@ -59,11 +59,11 @@ setupServiceCon:{[service;reference;reconnect;disconHandler]
 // Closes the connection and cleans out all references to it.
 //*******************************************************************************
 closeServiceCon:{[ref] 
-	h:getCon[ref];
-	hcloes[h];
-	//delete from	
-	'nyi;
-	}
+    h:getCon[ref];
+    hcloes[h];
+    //delete from   
+    'nyi;
+    }
 
 //*******************************************************************************
 // handleServiceConnectionClose[]
@@ -73,31 +73,31 @@ closeServiceCon:{[ref]
 // function.
 //
 // Parameters
-//		handle		The handle that was closed.
+//      handle      The handle that was closed.
 //
 //*******************************************************************************
 handleServiceConnectionClose:{[handle]
-	servReconnect:any exec Reconnect 
-							from .con.serviceConnections 
-							where Handle = handle;
+    servReconnect:any exec Reconnect 
+                            from .con.serviceConnections 
+                            where Handle = handle;
 
-	//Call all diconnection handlers.
-	{if[not x ~ ();
-			(value x[`DisconnectionHandler])[x[`ServiceName];x[`Instance]]];} each 
-		select from .con.serviceConnections where not DisconnectionHandler like "";
+    //Call all diconnection handlers.
+    {if[not x ~ ();
+            (value x[`DisconnectionHandler])[x[`ServiceName];x[`Instance]]];} each 
+        select from .con.serviceConnections where not DisconnectionHandler like "";
 
-	//Check if we should reconnect.
-	if[servReconnect;
-		h:openCon `$":",(string first con[`Host]),":",string first con[`Port];
-	//Setup pending connections if we can't get a new connection right away.
-		delete from `.con.serviceConnections where Handle = handle, Reconnect=0b;
-	  if[h=0i;
-			[`.con.peindingServiceConnections upsert 
-			 select Reference, ServiceName, Instance, DisconnectionHandler, Reconnect 
-			 from .con.serviceConnections where Handle = handle;
-			 delete from `.con.serviceConnections where Handle = handle];
-			update Handle:h from `.con.serviceConnections where Handle = handle]];
-	}
+    //Check if we should reconnect.
+    if[servReconnect;
+        h:openCon `$":",(string first con[`Host]),":",string first con[`Port];
+    //Setup pending connections if we can't get a new connection right away.
+        delete from `.con.serviceConnections where Handle = handle, Reconnect=0b;
+      if[h=0i;
+            [`.con.peindingServiceConnections upsert 
+             select Reference, ServiceName, Instance, DisconnectionHandler, Reconnect 
+             from .con.serviceConnections where Handle = handle;
+             delete from `.con.serviceConnections where Handle = handle];
+            update Handle:h from `.con.serviceConnections where Handle = handle]];
+    }
 
 //************************ Internal functions and tables ************************
 
@@ -107,21 +107,21 @@ handleServiceConnectionClose:{[handle]
 // in other ways correct. 
 //*******************************************************************************
 serviceConnections:([Reference:`$()]
-	Handle:`int$();
-	ServiceName:`$();
-	Instance:`$();
-	DisconnectionHandler:`$();
-	Reconnect:`boolean$());
+    Handle:`int$();
+    ServiceName:`$();
+    Instance:`$();
+    DisconnectionHandler:`$();
+    Reconnect:`boolean$());
 
 //*******************************************************************************
 // Pending connections is connections that have been setup but the connection 
 // isn't up for some reason.
 //*******************************************************************************
 pendingServiceConnections:([Reference:`$()]
-	ServiceName:`$();
-	Instance:`$();
-	DisconnectionHandler:();
-	Reconnect:`boolean$());
+    ServiceName:`$();
+    Instance:`$();
+    DisconnectionHandler:();
+    Reconnect:`boolean$());
 
 
 // Register the Service Connection close handler.

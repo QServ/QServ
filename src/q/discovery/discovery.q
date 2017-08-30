@@ -42,7 +42,8 @@ staleEntryTime:"I"$string .cfg.svc[`staleEntryTime];
 
 //***********************************************************
 // registerService[]
-// Registers the service defined in s.
+// Registers the service defined in svc.
+//
 // Parameter:  
 //    svc   A dictionary with the fields Service, Instance, 
 //          Host, Type, and Active.
@@ -150,7 +151,6 @@ heartbeat:{[s;t;f]
    functionHeartbeat[f];
    }
 
-
 serviceHeartbeat:{[s]
    if[not s~();
       update LastHeartBeat:.z.P from `Services where (flip (Service;Instance)) in flip value s];
@@ -176,7 +176,7 @@ system "t 1000";
 .z.ts:cleanStaleEntries;
    
 
-//*********** Webs tuff *************************
+//*********** Web stuff *************************
 \d .h
 .z.ph:{
    x:uh$[type x;x; first x];

@@ -1,3 +1,9 @@
+//*****************************************************************
+//
+// Dummy data to populate the discovery service.
+// Used when developing the web interface to see that it looks ok.
+//
+//*****************************************************************
 `Services upsert (`TEST_SVC;`DC1;`192.168.0.197;1111;`w;1;.z.P);
 `Services upsert (`TEST_SVC2;`DC1;`192.168.0.197;1111;`w;1;.z.P);
 `Services upsert (`TEST_SVC;`DC2;`studio;1111;`w;1;.z.P);

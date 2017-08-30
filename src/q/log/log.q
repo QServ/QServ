@@ -22,7 +22,7 @@
 // 3. A logging service can be setup to handle all logging.
 //    To log to a service a named reference to the service is used
 //    in the same way using the same functions as the named files. 
-//    The setup of the reference uses a different funtion
+//    The setup of the reference uses a different function
 // 
 \d .log
 
@@ -84,7 +84,7 @@ ffatal:{[fileRef;data] flog[fileRef;FATAL;data]}
 
 // All logging is stored in the log buffer to be flushed 
 // to file or sent to a log service at a later point. 
-// Setting upo a separate log service on the same machine 
+// Setting up a separate log service on the same machine 
 // can be a good idea if you don't want to block the service
 // during file I/O.
 logBuffer:([]Time:`timestamp$();
@@ -92,7 +92,7 @@ logBuffer:([]Time:`timestamp$();
              Level:`$();
              File:`$());
 
-// All trace messages are stored in the trace bkuffer 
+// All trace messages are stored in the trace buffer 
 // to be flushed to file at a later point.
 //
 traceBuffer:([]Time:`timestamp$();

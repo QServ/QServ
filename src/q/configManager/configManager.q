@@ -21,7 +21,7 @@
 // The configuration items in these files will be available in the variable
 // .cfg.svc.<name>
 //
-// NOTE: All config failes must end with .cfg in if the .cfg.loadAllSvcConfig[] 
+// NOTE: All config failes must end with .cfg if the .cfg.loadAllSvcConfig[] 
 //       is uesd to laod the configuration. All other files will be ignored.
 //
 // NOTE2: Remember that the loading order is important. If the same config name 

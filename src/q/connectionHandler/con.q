@@ -14,7 +14,7 @@
 // getCon[]
 //
 // This function is used to get the handle to another Q service. The Connection 
-// must have been setu using the function setupHostCon[] before this function is 
+// must have been setup using the function setupHostCon[] before this function is 
 // called. If the connection have been lost it will try to reconnect and return 
 // the new handle. To avoid stale or wrong handles the handle itself should never
 // be saved by a service, it should make use of the reference and this function 
