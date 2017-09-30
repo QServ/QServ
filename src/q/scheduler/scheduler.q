@@ -1,7 +1,8 @@
 \d .cron
 
 // The resolution of the timer used in ms.
-res:500h;
+res:5000h;
+
 setTimerRes:{[res]
    .cron.res:res;
    start[];
@@ -14,9 +15,9 @@ stop:{system "t 0";}
 start:{system "t ", string .cron.res;}
 
 //****** Functions to add commands to cron **************
-addCron:{[dom;wd;h;m;s;command]
-   .cron.cronSchedule:.cron.cronSchedule,flip (`DayOfMonth`Weekday`Hour`Min`Sec`Command)!
-      (enlist dom; enlist wd; enlist h; enlist m; enlist s; enlist command);
+addCron:{[dom;wd;h;m;command]
+   .cron.cronSchedule:.cron.cronSchedule,flip (`DayOfMonth`Weekday`Hour`Min`Command)!
+      (enlist dom; enlist wd; enlist h; enlist m; enlist command);
    }
 
 addOneTimeJob:{[c;t]
@@ -24,7 +25,9 @@ addOneTimeJob:{[c;t]
    }
 
 /*Loads a file with cron jobs*/
-loadSchedule:{[fileName]}
+loadSchedule:{[fileName]
+   `.cron.cronSchedule upsert ("IIII*";enlist ",")0:fileName
+   }
 
 //******************** Internal functions ****************
 // -1i means the same as * in cron (any).
@@ -33,7 +36,6 @@ cronSchedule:([]
    Weekday:`int$();
    Hour:`int$();
    Min:`int$();
-   Sec:`int$();
    Command:());
 
 cronOnce:([]
@@ -47,20 +49,24 @@ checkAll:{
       .cron.lastCheck:.cron.ts;
    ];}
 
-//Fungerar ej!!
 checkCronSchedule:{
    dow:(-2+`date$.cron.ts) mod 7;
-   c:exec 
-      Command 
+   matches:select 
      from 
       .cron.cronSchedule 
      where 
-      ((DayOfMonth=.cron.ts.dd) or(DayOfMonth<0)), 
-      ((Weekday=dow) or(Weekday<0)), 
-      ((Hour=.cron.ts.hh) or(Hour<0)), 
-      ((Min=.cron.ts.uu) or(Min<0)); //,
-      //((Sec within (.cron.lastCheck.second;.cron.ts.second)) or (Min<0));
-   executeCommands[c];
+      ((DayOfMonth=.cron.ts.dd) or (DayOfMonth<0)), 
+      ((Weekday=dow) or (Weekday<0)), 
+      ((Hour=.cron.ts.hh) or (Hour<0)), 
+      ((Min=.cron.ts.uu) or (Min<0));
+   matches:delete 
+      from matches 
+      where  
+        ((DayOfMonth=.cron.lastCheck.dd) or (DayOfMonth<0)), 
+        ((Weekday=dow) or (Weekday<0)), 
+        ((Hour=.cron.lastCheck.hh) or (Hour<0)), 
+        ((Min=.cron.lastCheck.uu) or (Min<0));
+   executeCommands[exec Command from matches];
    }
 
 checkCroneOnce:{
@@ -70,14 +76,14 @@ checkCroneOnce:{
 
 executeCommands:{[c]
    if[count c;
-      {show x; @[value;x;show "could not execute command ", x]} each c;
-      delete from `.cron.cronOnce where Time < ts];
+      {eval parse x} each c;
+      delete from `.cron.cronOnce where Time < .cron.ts];
    }
 
 
 getTimestamp:{$[useLocalTime;.z.P;.z.p]}
 
-lastCheck:.z.P;
+ts:lastCheck:getTimestamp[];
 .z.ts:checkAll;
 start[];
 \d .
