@@ -20,7 +20,7 @@ dsPort:"I"$ string .cfg.common[`discoveryPort];
 //*******************************************************************************
 getDsCon:{.con.getCon[`discovery]}
 
-//The services registred by this service.
+//The table containing services registred by this service.
 regServices:([Service:`symbol$();
    Instance:`symbol$()]
    Host:`symbol$();
@@ -28,7 +28,7 @@ regServices:([Service:`symbol$();
    Type:`symbol$();
    Active:`int$());
 
-//The tables registred by this service.
+//The table containing tables registred by this service.
 regTables:([Table:`symbol$();
    Part:`int$();
    Instance:`symbol$()]
@@ -36,7 +36,7 @@ regTables:([Table:`symbol$();
    Port:`int$();
    Active:`int$());
 
-//The functions registred by this service.
+//The table containing functions registred by this service.
 regFunctions:([Function:`symbol$();
    Instance:`symbol$()]
    Async:`boolean$();
