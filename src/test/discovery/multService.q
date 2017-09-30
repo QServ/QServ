@@ -5,9 +5,9 @@
 //
 //*********************************************************************
 
-\l ../../../q/configManager/configManager.q
-\l ../../../q/connectionHandler/con.q
-\l ../../../q/discovery/dsClient.q
+\l ../../q/configManager/configManager.q
+\l ../../q/connectionHandler/con.q
+\l ../../q/discovery/dsClient.q
 \e 1
 \p 12345
 

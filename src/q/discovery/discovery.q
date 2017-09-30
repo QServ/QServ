@@ -6,8 +6,10 @@
 //
 // All registred services can be viewed using the 
 // web intecface. 
-//Move to config later
-\l ../configManager/configManager.q
+
+.ds.qServHome:getenv `QSERV_HOME;
+system "l ", .ds.qServHome, "/src/q/configManager/configManager.q"
+
 .cfg.loadFile["ds.cfg"];
 
 

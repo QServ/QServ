@@ -2,10 +2,12 @@
 // The discovery client depends on the connection handler to get a connection to 
 // the discovery service.
 //*******************************************************************************
-\l ../configManager/configManager.q
-\l ../connectionHandler/con.q
 
+qServHome:getenv `QSERV_HOME;
+system "l ", qServHome, "/src/q/configManager/configManager.q"
+system "l ", qServHome, "/src/q/connectionHandler/con.q"
 \d .ds
+
 dsHost:.cfg.common[`discoveryHost];
 dsPort:"I"$ string .cfg.common[`discoveryPort];
 

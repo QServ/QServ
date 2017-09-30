@@ -245,8 +245,7 @@ openCon:{[host]
 
    // Call all registred hooks with the handle that was closed as argument.
    {@[value y;x;{show "Error executing function ", (string y)}];
-   }[con] each closeHooks;
-   }
+   }[con] each closeHooks;}
 
 // Register the Host Connection close handler.
 registerCloseHook[`.con.handleHostConnectionClose];
