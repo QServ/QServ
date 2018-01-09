@@ -89,9 +89,4 @@ loadFileIntoPrefix:{[path;prefix;filename]
    }[prefix]each flip ("SS";"=")0: `$":", path ,"/",filename;
    }
 
-
-//*********************** load common config ************************************
-
-loadCommonCfg[];
-
 \d .
