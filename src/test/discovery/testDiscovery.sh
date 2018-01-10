@@ -12,7 +12,7 @@ $QHOME/l32/q discovery.q &
 DISCOVERY_PID=$!
 popd
 
-//Start the mult test server
+## Start the mult test server
 $QHOME/l32/q multService.q &
 MULT_SVC_PID=$!
 

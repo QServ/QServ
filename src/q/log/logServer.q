@@ -1,5 +1,5 @@
-// This is a logging service that can be used to handle diskl I/O 
-// if 
+// This is a logging service that can be used to handle disk I/O 
+// 
 \l log.q
 \d .logServer
 port:9999;

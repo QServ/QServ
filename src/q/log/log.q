@@ -26,8 +26,13 @@
 // 
 \d .log
 
-// A logfile have to be setup using this function
-// before it is used.
+//*******************************************************************************
+// setupLogFile[]
+// Set up a reference to a logfile.
+// Parameter:
+//      ref       The refererence that will be used to loge to the given file.
+//      fileName  The name (or path) of the log file.   
+//*******************************************************************************
 setupLogFile:{[ref;fileName]
    if[ref in exec Reference from .log.logOutputs;   
          line: first select from .log.logOutputs where Reference = ref;
@@ -42,7 +47,11 @@ setupLogFile:{[ref;fileName]
    1b}
 
 //TODO: name and filename...fix.
-setupLogServer:{[ref;host;port]
+//*******************************************************************************
+// setupLogServer[]
+// 
+//*******************************************************************************
+setupLogServer:{[ref;fileName;host;port]
    if[ref in exec Reference from .log.logOutputs;   
          line: first select from .log.logOutputs where Reference = ref;
          warn[("reference ";ref ;" is already setup as "string line[`Type]; " logger")];
@@ -54,7 +63,8 @@ setupLogServer:{[ref;host;port]
          :0b]; 
    handle:hopen `$":",(string host),":", string port;
    if[handle = 0i;
-      warn["Could not open connection to ";host; ":";port]];
+      warn["Could not open connection to ";host; ":";port];
+      :       :0b];
    (neg handle) (".logServer.register";`test;`test.log);
    `.log.logOutputs upsert (host;ref;handle;port;`server);
    1b}
