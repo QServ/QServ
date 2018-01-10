@@ -112,4 +112,7 @@ commonConfigPath:getenv `KDB_COMMON_CONFIG_PATH;
 getConfigFileNames:{[path]
    f @ where (f: system "ls ",path) like "*.cfg"}
 
+
+//****************** the common config should always be loaded. *****************
+loadCommonCfg[]
 \d .
