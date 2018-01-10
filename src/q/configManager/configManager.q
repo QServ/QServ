@@ -31,13 +31,12 @@
 //*******************************************************************************
 
 \d .cfg
-svcConfigPath:getenv `KDB_SVC_CONFIG_PATH;
-commonConfigPath:getenv `KDB_COMMON_CONFIG_PATH;
 
 //*******************************************************************************
 // loadFile[]
 //
-// Loads a config file into the service config
+// Loads a service speciffic config file into the service config. The file must
+// be in the folder defined by KDB_SVC_CONFIG_PATH.
 //*******************************************************************************
 loadFile:{[filename]
    prefix:`svc;
@@ -47,15 +46,58 @@ loadFile:{[filename]
    }
 
 //*******************************************************************************
+// loadCommonCfg[]
+//
+// Loads all config files pressent in the foder defined by 
+// KDB_COMMON_CONFIG_PATH.
 //*******************************************************************************
 loadCommonCfg:{[]
    loadAllFiles[commonConfigPath;`common];
    }
+
 //*******************************************************************************
+// loadAllSvcConfig[]
+//
+// Loads all config files in the folder defined by KDB_SVC_CONFIG_PATH.
 //*******************************************************************************
 loadAllSvcConfig:{[]
    loadAllFiles[svcConfigPath;`svc];
    }
+
+//*******************************************************************************
+// loadAllFiles[path;prefix]
+// 
+// Loads all files in the directory defined by 'Path' into the name space
+// .cfg.[prefix]. 
+// This can be used to load config files from any directory and is not dependant 
+// on the environment variables being set.
+//*******************************************************************************
+loadAllFiles:{[path;prefix]
+   // create the prefix if needed
+   if[not prefix in key .cfg; .cfg[prefix]:(()!())];
+   
+   f:getConfigFileNames[path];
+   loadFileIntoPrefix[path;prefix] each f;
+   }
+
+//*******************************************************************************
+// loadFileIntoPrefix[path;prefix;filename]
+//
+// Loads a given file pressent in the given path into the given namespace in .cfg
+// This can be used to load config files from any directory and is not dependant 
+// on the environment variables being set.
+//*******************************************************************************
+loadFileIntoPrefix:{[path;prefix;filename]
+   {[prefix;x] 
+      if[not (x[0] like "#*") or (x[0] like "");
+      .cfg[prefix;x[0]]:x[1]]
+   }[prefix]each flip ("SS";"=")0: `$":", path ,"/",filename;
+   }
+
+//************* Internal functions. Not intended for external use ***************
+
+svcConfigPath:getenv `KDB_SVC_CONFIG_PATH;
+commonConfigPath:getenv `KDB_COMMON_CONFIG_PATH;
 
 //*******************************************************************************
 // getConfigFileNames[]
@@ -69,24 +111,5 @@ loadAllSvcConfig:{[]
 //*******************************************************************************
 getConfigFileNames:{[path]
    f @ where (f: system "ls ",path) like "*.cfg"}
-
-//*******************************************************************************
-//*******************************************************************************
-loadAllFiles:{[path;prefix]
-   // create the prefix if needed
-   if[not prefix in key .cfg; .cfg[prefix]:(()!())];
-   
-   f:getConfigFileNames[path];
-   loadFileIntoPrefix[path;prefix] each f;
-   }
-
-//*******************************************************************************
-//*******************************************************************************
-loadFileIntoPrefix:{[path;prefix;filename]
-   {[prefix;x] 
-      if[not (x[0] like "#*") or (x[0] like "");
-      .cfg[prefix;x[0]]:x[1]]
-   }[prefix]each flip ("SS";"=")0: `$":", path ,"/",filename;
-   }
 
 \d .
