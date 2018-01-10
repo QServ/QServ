@@ -1,8 +1,0 @@
-action,ms,bytes,lang,code,repeat,file,msx,bytesx,ok,okms,okbytes,valid,timestamp
-run,0,0,q,.test.details:.ds.getFunctionDetails (`.test.mult;`Primary),1,:testDiscovery.csv,0,1424,1,1,1,1,2017-09-30 20:48:30.309
-true,0,0,q,99h = type .test.details,1,:testDiscovery.csv,0,0,1,1,1,1,2017-09-30 20:48:30.309
-true,0,0,q,`.test.mult=first exec Function from .test.details,1,:testDiscovery.csv,0,0,1,1,1,1,2017-09-30 20:48:30.309
-true,0,0,q,`Primary=first exec Instance from .test.details,1,:testDiscovery.csv,0,0,1,1,1,1,2017-09-30 20:48:30.309
-true,0,0,q,.z.h=first exec Host from .test.details,1,:testDiscovery.csv,0,0,1,1,1,1,2017-09-30 20:48:30.309
-true,0,0,q,12345=first exec Port from .test.details,1,:testDiscovery.csv,0,0,1,1,1,1,2017-09-30 20:48:30.309
-run,0,0,q,20=.ds.execFun[`.test.mult;`Primary;0;5 4],1,:testDiscovery.csv,0,1648,1,1,1,1,2017-09-30 20:48:30.310
