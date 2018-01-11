@@ -18,6 +18,10 @@ pushd ${TEST_PATH}
 $QHOME/l32/q multService.q &
 MULT_SVC_PID=$!
 
+#Wait for the mult server to start and register its funtions in discovery
+sleep 2 ## TODO: change this to check the discovery service instead.
+
+
 $QHOME/l32/q testDiscovery.q
 
 kill -9 $DISCOVERY_PID

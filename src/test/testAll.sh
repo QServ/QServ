@@ -1,4 +1,4 @@
 #!/bin/bash
 
-config/testConfigManager.sh  
-discovery/testDiscovery.sh
+configManager/runTests.sh  
+discovery/runTests.sh
