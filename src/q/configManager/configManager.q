@@ -2,6 +2,14 @@
 // The config manager loads the configuration files used by a service. The 
 // loading of filed makes the asumption that the service is running on a unix 
 // like system with ls installed.
+// The format used it <name> = <value>. Comments can be added by starting the 
+// line with a #-character.
+//
+// Example:
+// # Port configuration example.
+// port=8888
+// # And the hostname
+// hostname=qserver 
 //
 // Two environment variables are used by the config manager. They are 
 // KDB_COMMON_CONFIG_PATH and KDB_SVC_CONFIG_PATH.
@@ -40,8 +48,6 @@
 //*******************************************************************************
 loadFile:{[filename]
    prefix:`svc;
-   // create the prefix if needed
-   if[not prefix in key .cfg; .cfg[prefix]:(()!())];
    loadFileIntoPrefix[svcConfigPath;prefix;filename];
    }
 
@@ -73,9 +79,6 @@ loadAllSvcConfig:{[]
 // on the environment variables being set.
 //*******************************************************************************
 loadAllFiles:{[path;prefix]
-   // create the prefix if needed
-   if[not prefix in key .cfg; .cfg[prefix]:(()!())];
-   
    f:getConfigFileNames[path];
    loadFileIntoPrefix[path;prefix] each f;
    }
@@ -88,6 +91,9 @@ loadAllFiles:{[path;prefix]
 // on the environment variables being set.
 //*******************************************************************************
 loadFileIntoPrefix:{[path;prefix;filename]
+   // create the prefix if needed
+   if[not prefix in key .cfg; .cfg[prefix]:(()!())];
+   
    {[prefix;x] 
       if[not (x[0] like "#*") or (x[0] like "");
       .cfg[prefix;x[0]]:x[1]]
