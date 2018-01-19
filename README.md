@@ -21,3 +21,5 @@ src/q/historyServer/ Not implemented yet. Will be a generic server that saves pu
 
 src/q/scheduler/ This is a scheduler that can be used to schedule jobs to run at certain times. 
                  Will be implemented as separate service also.
+
+src/test Contains tests on most components that make up QServ.

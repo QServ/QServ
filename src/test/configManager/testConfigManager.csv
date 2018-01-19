@@ -1,10 +1,14 @@
 action, time in ms, used bytes, test code, repeat, min version, comment
+run,0,,q,svc_path:getenv `KDB_SVC_CONFIG_PATH,,,Load the config path
+
 run,0,,q,.cfg.loadFile["svc.cfg"],,,Load service config file.
 true,0,,q,`svc in key .cfg,,,Check that the srv name space have been created.
 true,0,,q,`banana in key .cfg.svc,,,Check that the name configuration item has been created.
 true,0,,q,.cfg.svc[`banana]=`1234,,,Check that the config item is correct.
-true,0,,q,.cfg.svc[`test2]=`$"A string with spaces",,,Make sure that spaces in the config item doesn't break stuff.
+true,0,,q,.cfg.svc[`test3]=`$"A string with spaces",,,Make sure that spaces in the config item doesn't break stuff.
 true,0,,q,(count .cfg.svc)=3,,,Count the number of config item.
+run,0,,q,.cfg[`svc]:(()!()),,,Cleanup the .cfg.srv namespace
+true,0,,q,()~key .cfg[`svc],,,Check that .cfg.svc is now empty
 
 run,0,,q,.cfg.loadCommonCfg[],,,Load common config files.
 true,0,,q,`common in key .cfg,,,Check that the common name space have been created.
@@ -12,4 +16,33 @@ true,0,,q,`aSymbol in key .cfg.common,,,Check that the name configuration item h
 true,0,,q,.cfg.common[`aSymbol]=`banana,,,Check that the config item is correct.
 true,0,,q,.cfg.common[`test2]=`$"this is a dead parrot",,,Make sure that spaces in the config item doesn't break stuff.
 true,0,,q,(count .cfg.common)=3,,,Count the number of config item.
+run,0,,q,.cfg[`common]:(()!()),,,Cleanup the .cfg.common namespace
+true,0,,q,()~key .cfg[`common],,,Check that .cfg.common is now empty
+
+run,0,,q,.cfg.loadAllSvcConfig[],,,
+true,0,,q,`svc in key .cfg,,,Check that the srv name space have been created.
+true,0,,q,`banana in key .cfg.svc,,,Check that the name configuration item has been created.
+true,0,,q,.cfg.svc[`banana]=`1234,,,Check that the config item is correct.
+true,0,,q,.cfg.svc[`test3]=`$"A string with spaces",,,Make sure that spaces in the config item doesn't break stuff.
+true,0,,q,(count .cfg.svc)=3,,,Count the number of config item.
+run,0,,q,.cfg[`svc]:(()!()),,,Cleanup the .cfg.srv namespace
+true,0,,q,()~key .cfg[`svc],,,Check that .cfg.svc is now empty
+
+run,0,,q,.cfg.loadAllFiles["custom_config"; `custom]
+true,0,,q,`custom in key .cfg,,,Check that the custom name space have been created.
+true,0,,q,`custom1 in key .cfg.custom,,,Check that the name configuration item has been created.
+true,0,,q,.cfg.custom[`custom1]=`42,,,Check that the config item is correct.
+true,0,,q,(count .cfg.custom)=2,,,Count the number of config item.
+run,0,,q,.cfg[`custom]:(()!()),,,Cleanup the .cfg.custom namespace
+true,0,,q,()~key .cfg[`custom],,,Check that .cfg.custom is now empty
+
+run,0,,q,.cfg.loadFileIntoPrefix[svc_path; `test; "svc.cfg"],,,Load the service config file into the namepsace .cfg.test
+true,0,,q,`test in key .cfg,,,Check that the test name space have been created.
+false,0,,q,`svc in key .cfg,,,Check that the svc name space have not been created.
+true,0,,q,`banana in key .cfg.test,,,Check that the name configuration item has been created.
+true,0,,q,.cfg.test[`banana]=`1234,,,Check that the config item is correct.
+true,0,,q,.cfg.test[`test3]=`$"A string with spaces",,,Make sure that spaces in the config item doesn't break stuff.
+true,0,,q,(count .cfg.test)=3,,,Count the number of config item.
+run,0,,q,.cfg[`test]:(()!()),,,Cleanup the .cfg.test namespace
+true,0,,q,()~key .cfg[`test],,,Check that .cfg.test is now empty
 
