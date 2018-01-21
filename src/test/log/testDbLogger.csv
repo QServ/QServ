@@ -1,0 +1,20 @@
+action, time in ms, used bytes, test code, repeat, min version, comment
+run,0,,q,system "rm -rf */logHDB",,,Remove the log database if it exist
+true,0,,q,.log.level=.log.INFO,,,Check that the default log level is INFO
+
+run,0,,q,.log.info["Log info test"],,,Log something at level info
+true,0,,q,1=count .log.logTable,,,We should have one line in the log now
+run,0,,q,.log.flushLog[],,,Flush the log to file
+true,0,,q,0=count .log.logTable,,,The log buffer should now be empty
+run,0,,q,system "l .",,,Load the HDB log.
+true,0,,q,1~count logHDB,,,Check that the row have been saved in HDB
+
+run,0,,q,.log.debug["Log info test"],,,Log something at level debug.
+true,0,,q,0=count .log.logTable,,,We should not have any line in the log now as log level is info
+run,0,,q,.log.flushLog[],,,Flush the log to file
+true,0,,q,1~count logHDB,,,We should still have just one entry in HDB as the log table that was flushed was empty.
+
+
+
+
+

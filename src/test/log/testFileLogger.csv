@@ -1,0 +1,22 @@
+action, time in ms, used bytes, test code, repeat, min version, comment
+run,0,,q,system "rm -f logs/test.log",,,Remove the log file if it exist
+run,0,,q,.cfg.loadFile["log.cfg"],,,Load the config file
+true,0,,q,`logfile in key .cfg.svc,,,Check that the config entry has been loaded
+true,0,,q,.log.LOGOUT=-1,,,Check that we don't log to std out
+run,0,,q,.log.setLogfile[.cfg.svc[`logfile]],,,Redirect the log to the log file
+true,0,,q,not .log.LOGOUT=-1,,,Check that we don't log to std out
+true,0,,q,.log.level=.log.INFO,,,Check that the default log level is INFO
+
+run,0,,q,.log.info["Log info test"],,,Log something at level info
+true,0,,q,1=count .log.logBuffer,,,We should have one line in the log now
+run,0,,q,.log.flushLog[],,,Flush the log to file
+true,0,,q,0=count .log.logBuffer,,,The log buffer should now be empty
+true,0,,q,1~value first system "wc -l logs/test.log | awk '{print $1}'",,, Check that the log file contains one row
+run,0,,q,system "rm -f logs/test.log",,,Remove the log file
+
+run,0,,q,.log.debug["Log info test"],,,Log something at level debug.
+true,0,,q,0=count .log.logBuffer,,,We should not have any line in the log now as log level is info
+run,0,,q,.log.flushLog[],,,Flush the log to file
+true,0,,q,not "logs/test.log" in system "ls -f logs",,,No file should have been created as no rows was written.
+
+
