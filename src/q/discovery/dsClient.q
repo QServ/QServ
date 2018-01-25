@@ -91,13 +91,12 @@ getTableDetails:{
 //*******************************************************************************
 // registerFunctions[]
 // Parameter:  
-//    f  A dictionary with the fields Function, Host and 
-//       Port.
+//    
 //*******************************************************************************
 registerFunction:{[func;inst;async;active]
    con:getDsCon[];
    f:(`Function`Instance`Async`Host`Port`Active)!
-      (func;async;inst;.z.h;system "p";active);
+      (func;inst;async;.z.h;system "p";active);
    `.ds.regFunctions upsert f;
    con (`.ds.registerFunction;f);
    }
@@ -105,14 +104,24 @@ registerFunction:{[func;inst;async;active]
 getFunctionDetails:{
    getDsCon[] (`.ds.getFunctionDetails;x)}
 
+//*******************************************************************************
+// execFun[]
+// 
+// Executes a function that has been registred in the discovery service.
+// if keepHandle is true The handle to the server that was called will be kept
+// andsubsequent calls to the same function will go to the same server 
+// (unless the connection is lost).
+// params must be a list containing the parameters of the function, even if the 
+// function is unary.
+//*******************************************************************************
 execFun:{[fun;instance;keepHandle;params]
    d:first () xkey getFunctionDetails[(fun;instance)];
    h:$[keepHandle;
          getFunCon[d];
          getFunHandle[d]];
    ret:$[d[`Async];
-          [(neg h) (fun;params);1b];
-          h (fun;params)];
+          [(neg h) raze (fun;params);1b];
+          h raze (fun;params)];
    if[not keepHandle;
       hclose[h]];
    ret}
@@ -122,9 +131,9 @@ getFunHandle:{[funInfo]
 
 
 getFunCon:{[funInfo]
-   if[not fun in .con.references;
-       .con.setupHostCon[ funInfo[`Host]; funInfo[`Port];fun;1b;""]];
-   .con.getCon[fun]}
+   if[not funInfo[`Function] in .con.references;
+       .con.setupHostCon[ funInfo[`Host]; funInfo[`Port];funInfo[`Function];1b;""]];
+   .con.getCon[funInfo[`Function]]}
 
 //*******************************************************************************
 // hearbeat[]
