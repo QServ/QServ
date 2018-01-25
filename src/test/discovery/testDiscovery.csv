@@ -5,4 +5,4 @@ true,0,,q,`.test.mult=first exec Function from .test.details
 true,0,,q,`Primary=first exec Instance from .test.details
 true,0,,q,.z.h=first exec Host from .test.details
 true,0,,q,12345=first exec Port from .test.details
-run,0,,q,20=.ds.execFun[`.test.mult;`Primary;0;5 4],,,Check that the ds client can execute a function using the discovery information
+run,0,,q,20=.ds.execFun[`.test.mult;`Primary;0;enlist (5 4)],,,Check that the ds client can execute a function using the discovery information

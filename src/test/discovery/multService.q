@@ -18,7 +18,7 @@
 	result}
 
 //Register the function in the discovery service
-.ds.registerFunction[`.test.mult;0b;`Primary;1];
+.ds.registerFunction[`.test.mult;`Primary;0b;1];
 
 //Send heartbeats to the discovery service every second. 
 \t 1000
