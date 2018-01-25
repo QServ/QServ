@@ -3,9 +3,6 @@
 // of regular files.
 // If this logger is used it should only be used in a separate log server.
 //
-// It asumes that the database has been loaded using \l <db path> or as the 
-// command line parameter.
-//
 // The log levels available are:
 //     .log.FATAL
 //     .log.ERROR
@@ -18,26 +15,30 @@
 //
 //*******************************************************************************
 
+.cfg.loadAllSvcConfig[]
+system "l ", string .cfg.svc[`dbPath]
+
 \d .log
+
 
 //*******************************************************************************
 // log[]
 //
 // Logs the given message if lvl is lower or equal to the current log level.
 //*******************************************************************************
-.log.log:{[lvl;data]
+.log.log:{[lvl;source;data]
+   show data;
    if[not lvl>level;
-      //if[not 0h ~ type data; data: enlist data];
-      `.log.logTable upsert (.z.P;levels lvl;format[data])];
+      `.log.logTable upsert (.z.P;levels lvl;source;format[data])];
    }
 
 // Convinience logging functions:
-verbose:{[data] .log.log[VERBOSE;data]}
-debug:{[data] .log.log[DEBUG;data]}
-info:{[data] .log.log[INFO;data]}
-warn:{[data] .log.log[WARN;data]}
-error:{[data] .log.log[ERROR;data]}
-fatal:{[data] .log.log[FATAL;data]}
+verbose:{[source;data] .log.log[VERBOSE;source;data]}
+debug:{[source;data] .log.log[DEBUG;source;data]}
+info:{[source;data] .log.log[INFO;source;data]}
+warn:{[source;data] .log.log[WARN;source;data]}
+error:{[source;data] .log.log[ERROR;source;data]}
+fatal:{[source;data] .log.log[FATAL;source;data]}
 
 //*******************************************************************************
 // Write the log to HDB partitioned on the date extracted from the timestamp.
@@ -54,6 +55,7 @@ flushLog:{[]
 //*******************************************************************************
 logTable:([]Time:`timestamp$();
              Level:`$();
+             Source:`$();
              Message:());
 
 
@@ -70,7 +72,6 @@ levels:(FATAL;ERROR;WARN;INFO;DEBUG;VERBOSE)!(`FATAL;`ERROR;`WARN;`INFO;`DEBUG;`
 //The current log level.
 //Default: INFO
 level:INFO;
-
     
 //*******************************************************************************
 // Used internally to format the log string.

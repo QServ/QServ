@@ -1,4 +1,11 @@
+## emacs save files
 \#*
 ~*
+
+## Test data base directory
 db/
+
+## Test log directories
 logs/
+
+
