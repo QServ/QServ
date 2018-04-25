@@ -13,7 +13,7 @@ it will print `-->` in from of the function name when entering the function and 
 The functions available are:
 `wrapTraceFunction`: Wraps a single function.
 `wrapAllNsFunctions`: Wraps all functions in the given namespace.
-`wrapAll: Wraps all functions in all namespaces (except `.q`, `.Q`, `.h`, `.o` and `.debug`).
+`wrapAll`: Wraps all functions in all namespaces (except `.q`, `.Q`, `.h`, `.o` and `.debug`).
 
 There are also corresponding functions to remove the tracing wrapper from the functions:
 `unwrapTraceFunction`: Unwraps a single function.
