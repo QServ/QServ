@@ -1,5 +1,6 @@
 action, time in ms, used bytes, test code, repeat, min version, comment
-run,0,,q,system "rm -rf */logHDB",,,Remove the log database if it exist
+run,0,,q,system "rm -rf 20*",,,Remove the log database if it exist
+run,0,,q,.cfg.loadFile["log.cfg"],,,Load the config file
 true,0,,q,.log.level=.log.INFO,,,Check that the default log level is INFO
 
 run,0,,q,.log.info[`test;"Log info test"],,,Log something at level info
@@ -14,7 +15,5 @@ true,0,,q,0=count .log.logTable,,,We should not have any line in the log now as 
 run,0,,q,.log.flushLog[],,,Flush the log to file
 true,0,,q,1~count logHDB,,,We should still have just one entry in HDB as the log table that was flushed was empty.
 
-
-
-
-
+run,0,,q,system "cd ..",,,Go up from db folder
+run,0,,q,system "rm -rf db",,,Remove the test database.

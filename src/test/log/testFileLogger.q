@@ -4,7 +4,6 @@ system "l ", (getenv `QSERV_HOME), "/src/q/log/fileLogger.q"
 \l ../k4unit.q
 .KU.DEBUG:1
 .KU.VERBOSE:0
-
 KUltf `:testFileLogger.csv
 KUrt[]
 

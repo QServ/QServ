@@ -1,10 +1,13 @@
+pwd: raze system "pwd"
+system "l ", (getenv `QSERV_HOME), "/src/q/configManager/configManager.q"
 system "l ", (getenv `QSERV_HOME), "/src/q/log/dbLogger.q"
 
-\l ../k4unit.q
+
+system "l ", pwd, "/../k4unit.q"
 .KU.DEBUG:1
 .KU.VERBOSE:0
-KUltf `:testDbLogger.csv
-\l db
+KUltf hsym `$pwd, "/testDbLogger.csv"
+
 KUrt[]
 
 numTests:count  KUTR

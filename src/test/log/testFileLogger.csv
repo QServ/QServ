@@ -20,3 +20,4 @@ run,0,,q,.log.flushLog[],,,Flush the log to file
 true,0,,q,not "logs/test.log" in system "ls -f logs",,,No file should have been created as no rows was written.
 
 
+
