@@ -85,6 +85,11 @@ getFunctionNameAsString:{[ns;fn]
 // calls the original function with protected evaluation.
 // if an error occurs the function name is printed out 
 // and the error is rethrown.
+// TODO: the variables in the functions should be saved 
+// off for inspection in all levels of the stack trace. 
+// These variables should be saved in a separate data
+// structure and utility functions should be implemented
+// to access them.
 wrapTraceFunction:{[ns;fn]
    //Check if the function is already wrapped.
    if[fn like "wrapped_*"; :0b];
@@ -103,17 +108,6 @@ wrapTraceFunction:{[ns;fn]
    //Overwrite the old function with the new.
    ![ns;();0b;(enlist fn)!enlist newFn];
    }
-
-// This function replaces an existing function and 
-// calls the original function with protected evaluation.
-// if an error occurs the function name is printed out 
-// and the error is rethrown.
-// TODO: the variables in the functions should be saved 
-// off for inspection in all levels of the stack trace. 
-// These variables should be saved in a separate data
-// structure and utility functions should be implemented
-// to access them.
-//wrapTraceFunction:`debug 2:(`wrapFunction;2);
 
 
 // Removes the trace wrapper from the fucntion. 
