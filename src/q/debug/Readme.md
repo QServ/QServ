@@ -1,7 +1,7 @@
 ## Error trapping
 I have found it frustration to try to debug code that have error traps in it. For this reason I created helper functions that can be
 used as drop in replacements for error traps but that can be turned off.
-These funcitions are `utrap` (unary trap) and `mtrap` (multivalent). They have the same sytax as the error trapp functions in Q `@` (unary) and `.` (multivalent). 
+These funcitions are `utrap` (unary trap) and `mtrap` (multivalent). They have the same sytax as the error trap functions in Q `@` (unary) and `.` (multivalent). 
 The error trap can then be turned on or off by unsing the functions `enableTrap` and `disableTrap`.
 
 
