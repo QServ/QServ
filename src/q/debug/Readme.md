@@ -11,14 +11,14 @@ It is used to wrap some or all functions in new functions that will print the fu
 it will print `-->` in from of the function name when entering the function and `<--` when exiting it. 
 
 The functions available are:
-`wrapTraceFunction`: Wraps a single function.
-`wrapAllNsFunctions`: Wraps all functions in the given namespace.
-`wrapAll`: Wraps all functions in all namespaces (except `.q`, `.Q`, `.h`, `.o` and `.debug`).
+* `wrapTraceFunction`: Wraps a single function.
+* `wrapAllNsFunctions`: Wraps all functions in the given namespace.
+* `wrapAll`: Wraps all functions in all namespaces (except `.q`, `.Q`, `.h`, `.o` and `.debug`).
 
 There are also corresponding functions to remove the tracing wrapper from the functions:
-`unwrapTraceFunction`: Unwraps a single function.
-`unwrapAllNsFunctions`: Unwraps all functions in the given namespace.
-`unwrapAll`: Unwraps all functions in all namespaces (except `.q`, `.Q`, `.h`, `.o` and `.debug`).
+* `unwrapTraceFunction`: Unwraps a single function.
+* `unwrapAllNsFunctions`: Unwraps all functions in the given namespace.
+* `unwrapAll`: Unwraps all functions in all namespaces (except `.q`, `.Q`, `.h`, `.o` and `.debug`).
 
 Tracing can also be turned on or off using the functions `enableTrace` and `disableTrace`.
 
